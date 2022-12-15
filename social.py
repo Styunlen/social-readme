@@ -26,7 +26,7 @@ def generate_blog(rss_link, limit, readme) -> str:
             # "title": (entry["title"][0:20] + "...") if(len(entry["title"]) > 22) else entry["title"],
             "title": entry["title"],
             "url": entry["link"].split("#")[0],
-            "published": entry["published"].split("T")[0],
+            "published": format_time(entry["published"]),
         }
         for entry in entries[:limit]
     ]
@@ -72,6 +72,11 @@ def format_time(timestamp) -> datetime:
     gmt_format = '%a, %d %b %Y %H:%M:%S GMT'
     date_str = datetime.datetime.strptime(timestamp, gmt_format) + datetime.timedelta(hours=8)
     return date_str.date()
+
+def format_time_blog(timestamp) -> datetime:
+    gmt_format = '%a, %d %b %Y %H:%M:%S +0000'
+    date_str = datetime.datetime.strptime(timestamp, gmt_format) + datetime.timedelta(hours=8)
+    return date_str.strftime("%Y-%m-%d %H:%M")
 
 
 def generate_rating_star(desc) -> str:
